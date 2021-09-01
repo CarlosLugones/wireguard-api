@@ -24,8 +24,8 @@ services:
         - INTERNAL_SUBNET=10.13.13.0 # only change if it clashes
         - ALLOWEDIPS=0.0.0.0/0 # change this or ALL traffic will be routed thorugh the VPN
       volumes:
-        - /apps/lugodev-vpn-node/codebase:/codebase
-        - /apps/lugodev-vpn-node/storage/config:/config
+        - /apps/lugodev-vpn-node:/codebase
+        - /apps/lugodev-vpn-node/config:/config
         - /lib/modules:/lib/modules
       networks:
         lugodev_vpn_subnet:
