@@ -1,0 +1,42 @@
+version: "3"
+
+services:
+
+    # https://hub.docker.com/r/linuxserver/wireguard
+    # A VPN node with Wireguard service and an API exposed over 8008 port, based in FastAPI
+    lugodev_vpn_node:
+      build:
+        context: "."
+        dockerfile: Dockerfile
+      container_name: lugodev_vpn_node
+      cap_add:
+        - NET_ADMIN
+        - SYS_MODULE
+      environment:
+        - PUID=1000
+        - PGID=1000
+        - TZ=Europe/London
+        - LUGODEV_VPN_TOKEN=${LUGODEV_VPN_TOKEN}
+        - SERVERURL=${LUGODEV_VPN_HOSTNAME}
+        - SERVERPORT=51820
+        - PEERS=0 # peers to be generated
+        - PEERDNS=auto # optional
+        - INTERNAL_SUBNET=10.13.13.0 # only change if it clashes
+        - ALLOWEDIPS=0.0.0.0/0 # change this or ALL traffic will be routed thorugh the VPN
+      volumes:
+        - /apps/lugodev-vpn-node/codebase:/codebase
+        - /apps/lugodev-vpn-node/storage/config:/config
+        - /lib/modules:/lib/modules
+      networks:
+        lugodev_vpn_subnet:
+          aliases:
+            - lugodev_vpn_node
+      ports:
+        - 51820:51820/udp
+        - 8008:8008
+      sysctls:
+        - net.ipv4.conf.all.src_valid_mark=1
+      restart: unless-stopped
+
+networks:
+  lugodev_vpn_subnet:
