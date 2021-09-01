@@ -9,7 +9,7 @@ WORKDIR /codebase
 
 RUN pip3 install -r requirements.txt
 
-CMD uvicorn api:app --host lugodev_vpn_wireguard --port 8008;
+CMD uvicorn api:app --host lugodev_vpn_node --port 8008;
 
 EXPOSE 51820
 EXPOSE 8008
