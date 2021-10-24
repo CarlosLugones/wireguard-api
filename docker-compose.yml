@@ -23,8 +23,6 @@ services:
         - INTERNAL_SUBNET=10.13.13.0 # only change if it clashes
         - ALLOWEDIPS=0.0.0.0/0 # change this or ALL traffic will be routed through the VPN
       volumes:
-        - /apps/wireguard-api:/codebase
-        - /apps/wireguard-api:/config
         - /lib/modules:/lib/modules
       networks:
         wireguard_api_subnet:
