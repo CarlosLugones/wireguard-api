@@ -1,5 +1,6 @@
 # wireguard-api
-VPN node based in Wireguard with an API to get commands from master node
+
+VPN node based in Wireguard with an API exposed to receive commands.
 
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/ragnarok22/wireguard-api/Release?label=Release)
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/ragnarok22/wireguard-api/Publish%20Docker%20image?label=Docker%20image)
@@ -9,11 +10,58 @@ VPN node based in Wireguard with an API to get commands from master node
 [![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
+## Installation
+
+Pull the image from GitHub Container Registery:
+
+```bash
+docker pull ghcr.io/lugodev/wireguard-api:main
+```
+
+## Run the container
+
+Run the container, providing the environment vars and the volume to store the VPN configurations:
+
+```
+docker run wireguard-api -d \
+    -e API_TOKEN=YOUR_TOKEN \
+    -e VPN_HOSTNAME=YOUR_HOSTNAME \
+    -v /wireguard-api:/wireguard-api
+```
+
+The env vars:
+* `YOUR_TOKEN`: the token you pass to the API when sending commands via HTTP requests.
+* `YOUR_HOSTNAME`: your VPN hostname.
+
+The volume `/wireguard-api` holds the VPN configurations, map the folder you'd like in your folders structure.
+
+## Ports exposed
+
+The container exposes two ports, which must be allowed in your firewall in order to receive traffic.
+
+* `51820`: WireGuard protocol.
+* `8008`: WireGuard API.
+
+Allow the ports:
+
+```bash
+ufw allow 51820
+ufw allow 8008
+ufw reload
+```
+
 ## Usage
-An easy way to communicate your wireguard server with your ui. Just make a post request to root route with de token key and the command. Example:
+
+An easy way to communicate your WireGuard server with your UI. Just make a post request to root route with the token key and the command. Example:
 
 ```bash
 curl --request POST http://wireguard_api -d 'token=my_token&command=my_command'
+```
+
+Examples:
+
+```BASH
+curl --request POST http://myvpn.com:8008/ -d 'token=my_token&command=wg set wg0 peer 6DVHXzbM0TfPr6Q4yDBtA/A0jzdUXu8XqR+yV2vF1F9= remove'
 ```
 
 ## Contributors ✨

@@ -28,7 +28,6 @@ async def run_command(command: Command):
                 shell=True,
                 stderr=subprocess.STDOUT
             )
-
         except Exception as e:
             status = str(e)
         return {"status": status}

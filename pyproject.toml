@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "Wireguard-Api"
+name = "wireguard-api"
 version = "0.1.0"
-description = "VPN node based in Wireguard with an API to get commands from master node"
+description = "VPN node based in Wireguard with an API exposed to receive commands"
 authors = ["Carlos Lugones <contact@lugodev.com>", "Reinier Hernández <sasuke.reinier@gmail.com>"]
 
 [tool.poetry.dependencies]
