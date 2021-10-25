@@ -29,21 +29,32 @@ docker pull lugodev/wireguard-api
 Run the container, providing the environment vars and the volume to store the VPN configurations:
 
 ```
-docker run lugodev/wireguard-api -d \
-    -e VPN_TIMEZONE=Europe/London \
-    -e VPN_HOSTNAME=YOUR_HOSTNAME \
-    -e VPN_PORT=51820 \
-    -e VPN_PEERS=0 \
-    -e API_PORT=8008 \
-    -e API_TOKEN=YOUR_TOKEN \
-    -e INTERNAL_SUBNET=10.13.13.0 \
-    -v /wireguard-api:/wireguard-api \
-    -v /lib/modules:/lib/modules
+docker run -d \
+    --name=wireguard_api \
+    --cap-add=NET_ADMIN \
+    --cap-add=SYS_MODULE \
+    -e API_TOKEN=Your token \
+    -e PUID=1000 \
+    -e PGID=1000 \
+    -e TZ=Europe/London \
+    -e SERVERURL=wireguard.domain.com `#optional` \
+    -e SERVERPORT=51820 `#optional` \
+    -e PEERS=1 `#optional` \
+    -e PEERDNS=auto `#optional` \
+    -e INTERNAL_SUBNET=10.13.13.0 `#optional` \
+    -e ALLOWEDIPS=0.0.0.0/0 `#optional` \
+    -p 51820:51820/udp \
+    -p 8008:8008 \
+    -v /wireguard-api:/config \
+    -v /lib/modules:/lib/modules \
+    --sysctl="net.ipv4.conf.all.src_valid_mark=1" \
+    --restart unless-stopped \
+    ghcr.io/lugodev/wireguard-api:main
 ```
 
 The env vars:
-* `YOUR_TOKEN`: the token you pass to the API when sending commands via HTTP requests.
-* `YOUR_HOSTNAME`: your VPN hostname.
+* `API_TOKEN`: the token you pass to the API when sending commands via HTTP requests.
+* `SERVERURL`: your VPN hostname.
 
 The volume `/wireguard-api` holds the VPN configurations, map the folder you'd like in your folders structure.
 
