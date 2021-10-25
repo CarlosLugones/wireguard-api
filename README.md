@@ -18,15 +18,27 @@ Pull the image from GitHub Container Registery:
 docker pull ghcr.io/lugodev/wireguard-api:main
 ```
 
+Or from Docker Hub:
+
+```bash
+docker pull lugodev/wireguard-api
+```
+
 ## Run the container
 
 Run the container, providing the environment vars and the volume to store the VPN configurations:
 
 ```
-docker run wireguard-api -d \
-    -e API_TOKEN=YOUR_TOKEN \
+docker run lugodev/wireguard-api -d \
+    -e VPN_TIMEZONE=Europe/London \
     -e VPN_HOSTNAME=YOUR_HOSTNAME \
-    -v /wireguard-api:/wireguard-api
+    -e VPN_PORT=51820 \
+    -e VPN_PEERS=0 \
+    -e API_PORT=8008 \
+    -e API_TOKEN=YOUR_TOKEN \
+    -e INTERNAL_SUBNET=10.13.13.0 \
+    -v /wireguard-api:/wireguard-api \
+    -v /lib/modules:/lib/modules
 ```
 
 The env vars:

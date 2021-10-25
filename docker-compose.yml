@@ -11,17 +11,6 @@ services:
       cap_add:
         - NET_ADMIN
         - SYS_MODULE
-      environment:
-        - PUID=1000
-        - PGID=1000
-        - TZ=Europe/London
-        - API_TOKEN=${API_TOKEN}
-        - SERVERURL=${VPN_HOSTNAME}
-        - SERVERPORT=51820
-        - PEERS=0 # peers to be generated
-        - PEERDNS=auto # optional
-        - INTERNAL_SUBNET=10.13.13.0 # only change if it clashes
-        - ALLOWEDIPS=0.0.0.0/0 # change this or ALL traffic will be routed through the VPN
       volumes:
         - /lib/modules:/lib/modules
       networks:
@@ -29,8 +18,8 @@ services:
           aliases:
             - wireguard_api
       ports:
-        - 51820:51820/udp
-        - 8008:8008
+        - 51820:${VPN_PORT}/udp
+        - 8008:${API_PORT}
       sysctls:
         - net.ipv4.conf.all.src_valid_mark=1
       restart: unless-stopped
